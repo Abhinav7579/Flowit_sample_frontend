@@ -6,14 +6,16 @@ import BottomWarning from "../components/Bottomwarning"
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-
+import Loader from "../components/Loader"
 export default function Signin() {    
     const navigate=useNavigate();
      const [username,setusername]=useState("");
     const [password,setpassword]=useState("");
-
+    const [loading, setLoading] = useState(false);
     const handleSignin = async () => {
+      setLoading(true);
     try {
+      
       const response = await axios.post("https://flowbit.onrender.com/api/v1/user/signin", {
         email:username,
         password:password,
@@ -29,7 +31,11 @@ export default function Signin() {
     } catch (error) {
       alert("Signin failed");
     }
+    finally{
+      setLoading(false);
+    }
   };
+   if (loading) return <Loader />;
 
 
     return <div className="bg-blue-100 h-screen flex justify-center">
